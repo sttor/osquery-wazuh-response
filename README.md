@@ -24,6 +24,10 @@ It use iptable to perform actions. It is for Linux systems only.
 
 ![PROCESS KILL QUERY](https://i.imgur.com/KLbaJhu.png)
 
+![DASHBOARD](https://i.imgur.com/jkiKlrK.png)
+
+![MISC](https://i.imgur.com/jAEFcZ9.png)
+
 
 ## TODO
 
