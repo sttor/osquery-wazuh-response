@@ -20,9 +20,9 @@ It use iptable to perform actions. It is for Linux systems only.
     
 ## ScreenShots
 
-![IPTABLE QUERY](lhttps://imgur.com/TkZhQup)
+![IPTABLE QUERY](https://i.imgur.com/TkZhQup.png)
 
-![PROCESS KILL QUERY](https://imgur.com/KLbaJhu)
+![PROCESS KILL QUERY](https://i.imgur.com/KLbaJhu.png)
 
 
 ## TODO
