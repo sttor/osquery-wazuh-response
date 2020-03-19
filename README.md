@@ -12,15 +12,19 @@ It use iptable to perform actions. It is for Linux systems only.
 
 > Blocking IP and Port using iptables
 
-    `select * from active_response where arguments='{"-s": "45.10.23.67,45.68.98.0","-j": "DROP", "-A": "OUTPUT", "--dports": "67,78,96", "-p": "tcp", "-m": "multiport"}' and action="iptable_rule";`
+    select * from active_response where action="iptable_rule" and arguments='{"-s": "45.10.23.67,45.68.98.0","-j": "DROP", "-A": "OUTPUT", "--dports": "67,78,96", "-p": "tcp", "-m": "multiport"}';
 
 > Killing a process
 
-    `select * from active_response where arguments='{"signal":"9","pid":56776}' and action="process_kill";`
+    select * from active_response where action="process_kill" and arguments='{"signal":"9","pid":56776}';
     
-## Screenshots
+## ScreenShots
 
-   
+![IPTABLE QUERY](lhttps://imgur.com/TkZhQup)
+
+![PROCESS KILL QUERY](https://imgur.com/KLbaJhu)
+
+
 ## TODO
 
 * Patching using `sudo apt-get install`
