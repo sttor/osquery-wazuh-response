@@ -1,10 +1,10 @@
-##Introduction
+## Introduction
 
 This is an osquery extension to perform actions like blocking ip/port and killing process.
 It use iptable to perform actions. It is for Linux systems only. 
 
 
-##Execution
+## Execution
 
 * `pip install osquery`
 * `chmod +x active_response_extension.py`
@@ -18,6 +18,8 @@ It use iptable to perform actions. It is for Linux systems only.
 
     `select * from active_response where arguments='{"signal":"9","pid":56776}' and action="process_kill";`
     
+## Screenshots
+
    
 ## TODO
 
