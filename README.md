@@ -14,14 +14,23 @@ The core is just few lines of python codes.
 * `chmod +x active_response_extension.py`
 * `sudo osqueryi --allow_unsafe --extension active_response_extension.py`
 
-> Blocking IP and Port using iptables
-
-    select * from active_response where action="iptable_rule" and arguments='{"-s": "45.10.23.67,45.68.98.0","-j": "DROP", "-A": "OUTPUT", "--dports": "67,78,96", "-p": "tcp", "-m": "multiport"}';
-
 > Killing a process
 
-    select * from active_response where action="process_kill" and arguments='{"signal":"9","pid":56776}';
+    select * from active_response where rule="kill_proces" and args='{"signal":"9","pid":56776}';
     
+> Executin Wazuh responses
+
+    select * from active_response where rule="host-deny.sh" and action="add" and ip="24.56.78.98"';
+   
+Wazuh require action,ip,user in order to execute the command.
+
+> Create your own command in python. 
+
+1. Refer kill_process.py structure
+2. import the custom file
+3. include filename in ActiveResonse.PYTHON_RULES.
+4. In query add **args** as a json of arguments required.
+
 ## ScreenShots
 
 ![IPTABLE QUERY](https://i.imgur.com/TkZhQup.png)
@@ -35,4 +44,3 @@ The core is just few lines of python codes.
 
 ## TODO
 
-* Patching using `sudo apt-get install`

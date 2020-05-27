@@ -7,7 +7,8 @@ import re
 import subprocess
 import osquery
 
-
+#import custom python rules
+import kill_process
 
 @osquery.register_plugin
 class ActiveResponsePlugin(osquery.TablePlugin):
@@ -61,7 +62,7 @@ class ActiveResponse(object):
     Entry point of the executeion that will call the required actions.
     Add any new Rule file here. Default is the active response rule files from wazuh-response
     """
-    RULE_FILES = [
+    WAZUH_RULES = [
         'route-null.sh',
         'ip-customblock.sh',
         'default-firewall-drop.sh',
@@ -72,12 +73,17 @@ class ActiveResponse(object):
         'pf.sh',
         'route-null.cmd',
         'netsh.cmd',
-        'kill_process.py',
         'disable-account.sh',
         'firewalld-drop.sh',
     ]
 
+    PYTHON_RULE = [
+        'kill_process'
+    ]
 
+    BASH_RULE = [
+
+    ]
 
     def __init__(self, cmd_dict):
         self.cmd_dict = cmd_dict
@@ -88,28 +94,26 @@ class ActiveResponse(object):
         self.args = self.cmd_dict.get("args","")
         self.validate_arguments()
 
+    def rule_obj(self):
+        module = sys.modules.get(self.rule)
+        return getattr(module, "Rule")(self.args)
 
     def validate_arguments(self):
         assert self.ip == "-" or ipaddress.ip_address(self.ip)
         assert self.action in ["-","add","delete"]
         assert re.match("^[a-zA-Z0-9_.-]+$", self.user)
-        assert self.rule in ActiveResponse.RULE_FILES
-
-    def get_rule_executor(self):
-        extension_binary = {"py":sys.executable,"sh":"sh","cmd","cmd"}
-        return extension_binary[]
+        assert self.rule in ActiveResponse.WAZUH_RULES + ActiveResponse.PYTHON_RULE + ActiveResponse.BASH_RULE
+        if self.rule in ActiveResponse.PYTHON_RULE:
+            assert self.rule_obj().validate_arguments()
 
     def build_command(self):
-        extension = self.rule.split(".")[1]
         command = [self.rule,self.action,self.user,self.ip]
-        if extension == "py":
-            command.insert(0,sys.executable)
-        elif extension == "sh":
-            command[0]="./"+self.rule
-        elif extension =="cmd":
-            pass
+        if self.rule in ActiveResponse.PYTHON_RULE:
+            command =  self.rule_obj().command()
+        elif self.rule.endswith(".cmd"):
+            command.insert(0,self.rule)
         else:
-            pass
+            command[0]="./"+self.rule
         return command
 
     def respond(self):
@@ -119,19 +123,6 @@ class ActiveResponse(object):
         if not out:
             out = "response-executed"
         return [out, err]
-
-
-    def execute_subprocess_command(self):
-        """
-        :return:
-        This will execute subprocess command
-        """
-        command = ["kill", "-" + str(self.arguments["signal"]), str(self.arguments["pid"])]
-        p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, err = p.communicate()
-        return [out, err]
-
-
 
 if __name__ == "__main__":
     osquery.start_extension(name="active_response_extension", version="1.0.0")
