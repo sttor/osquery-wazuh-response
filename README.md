@@ -1,7 +1,11 @@
 ## Introduction
 
-This is an osquery extension to perform actions like blocking ip/port and killing process.
-It use iptable to perform actions. It is for Linux systems only. 
+Osquery extension to perform active response using sql query. The repo contains
+wazuh active response .sh and .cmd files and some python scripts. 
+Custom .sh,.cmd and .py can be added and hence can be remotely used by osquery. The 
+extension is coded keeping security in mind. 
+
+The core is just few lines of python codes.
 
 
 ## Execution
