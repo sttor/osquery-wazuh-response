@@ -1,3 +1,5 @@
+# DONT USE ANY OF THE FUNCTIONALITY, CHANGES TO BE COMMITTED BY THIS WEE,
+
 ## Introduction
 
 Osquery extension to perform active response using sql query. The repo contains
