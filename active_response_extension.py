@@ -101,7 +101,7 @@ class ActiveResponse(object):
     def validate_arguments(self):
         assert self.ip == "-" or ipaddress.ip_address(self.ip)
         assert self.action in ["-","add","delete"]
-        assert re.match("^[a-zA-Z0-9_.-]+$", self.user)
+        assert self.user == "-" or re.match("^[a-zA-Z0-9_.-]+$", self.user)
         assert self.rule in ActiveResponse.WAZUH_RULES + ActiveResponse.PYTHON_RULE + ActiveResponse.BASH_RULE
         if self.rule in ActiveResponse.PYTHON_RULE:
             assert self.rule_obj().validate_arguments()
