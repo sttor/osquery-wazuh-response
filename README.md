@@ -1,5 +1,3 @@
-# DONT USE ANY OF THE FUNCTIONALITY, CHANGES TO BE COMMITTED BY THIS WEE,
-
 ## Introduction
 
 Osquery extension to perform active response using sql query. The repo contains
@@ -9,7 +7,6 @@ extension is coded keeping security in mind.
 
 The core is just few lines of python codes.
 
-
 ## Execution
 
 * `pip install osquery`
@@ -18,9 +15,9 @@ The core is just few lines of python codes.
 
 > Killing a process
 
-    select * from active_response where rule="kill_proces" and args='{"signal":"9","pid":56776}';
+    select * from active_response where rule="kill_process" and args='{"signal":"9","pid":56776}';
     
-> Executin Wazuh responses
+> Executing Wazuh responses
 
     select * from active_response where rule="host-deny.sh" and action="add" and ip="24.56.78.98"';
    

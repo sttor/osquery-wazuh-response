@@ -57,7 +57,7 @@ esac
 # This number should be more than enough (even if a hundred
 # instances of this script is ran together). If you have
 # a really loaded env, you can increase it to 75 or 100.
-MAX_ITERATION="50"
+MAX_ITERATION="5"
 
 # Lock function
 lock()
