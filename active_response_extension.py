@@ -10,8 +10,8 @@ import traceback
 
 import osquery
 
-
 # import custom python rules
+import kill_process
 
 @osquery.register_plugin
 class ActiveResponsePlugin(osquery.TablePlugin):
@@ -96,10 +96,10 @@ class ActiveResponse(object):
     def __init__(self, cmd_dict):
         self.cmd_dict = cmd_dict
         self.rule = self.cmd_dict["rule"]
-        self.action = self.cmd_dict.get("action", "-")
-        self.user = self.cmd_dict.get("user", "-")
-        self.ip = self.cmd_dict.get("ip", "-")
-        self.args = self.cmd_dict.get("args", "")
+        self.action = self.cmd_dict.get("action", "-") or "-"
+        self.user = self.cmd_dict.get("user", "-") or "-"
+        self.ip = self.cmd_dict.get("ip", "-") or "-"
+        self.args = self.cmd_dict.get("args", "") or ""
 
     def rule_obj(self):
         module = sys.modules.get(self.rule)
@@ -134,7 +134,7 @@ class ActiveResponse(object):
             out, err = p.communicate()
         except Exception as e:
             _, _, tb = sys.exc_info()
-            traceback.print_tb(tb)  # Fixed format
+            #traceback.print_tb(tb)  # Fixed format
             tb_info = traceback.extract_tb(tb)
             filename, line, func, text = tb_info[-1]
             err = 'An error occurred on line {} in statement {} - {}'.format(line, text, str(e))
@@ -143,4 +143,4 @@ class ActiveResponse(object):
 
 
 if __name__ == "__main__":
-    osquery.start_extension(name="active_response_extension", version="1.0.0")
+    osquery.start_extension(name="active_response", version="1.0.0")

@@ -9,7 +9,6 @@ class Rule(object):
     def command(self):
         return ["kill","-"+str(self.arguments["signal"]),str(self.arguments["pid"])]
 
-
     def validate_arguments(self):
         """
         :return:
