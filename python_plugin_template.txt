@@ -1,0 +1,21 @@
+import json
+
+class Rule(object):
+    def __init__(self,arguments):
+        self.arguments = json.loads(arguments)
+
+    def execute_rule(self):
+        pass
+
+    def command(self):
+        """
+        Execute some command in python or return os commands for os.PIPE.
+        :return:
+        """
+        return ["ls"]
+
+    def validate_arguments(self):
+        """
+        :return:
+        """
+        return True
