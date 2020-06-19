@@ -69,7 +69,6 @@ class ActiveResponse(object):
     Entry point of the executeion that will call the required actions.
     Add any new Rule file here. Default is the active response rule files from wazuh-response
     """
-    EXTENSION_FOLDER_NAME = "osquery-wazuh-response"
     WAZUH_RULES = [
         'route-null.sh',
         'ip-customblock.sh',
@@ -114,14 +113,11 @@ class ActiveResponse(object):
             assert self.rule_obj().validate_arguments()
 
     def build_command(self):
-        self.path = os.path.join(ActiveResponse.EXTENSION_FOLDER_NAME, self.rule)
         command = [self.rule, self.action, self.user, self.ip]
         if self.rule in ActiveResponse.PYTHON_RULE:
             command = self.rule_obj().command()
-        elif self.rule.endswith(".cmd"):
-            command.insert(0, self.rule)
         else:
-            command[0] = "./" + self.path
+            command[0] = os.path.join(os.path.dirname(os.path.abspath(__file__)),self.rule)
         return command
 
     def respond(self):
@@ -129,7 +125,6 @@ class ActiveResponse(object):
         try:
             self.validate_arguments()
             command = self.build_command()
-            print(command, self.cmd_dict, self.path)
             p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             out, err = p.communicate()
         except Exception as e:

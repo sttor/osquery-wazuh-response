@@ -13,14 +13,16 @@ The core is just few lines of python codes.
 * `chmod +x active_response_extension.py`
 * `sudo osqueryi --allow_unsafe --extension active_response_extension.py`
 
+
+> Executing Wazuh responses
+
+    select * from active_response where rule="host-deny.sh" and action="add" and ip="24.56.78.98"';
+
 > Killing a process
 
     select * from active_response where rule="kill_process" and args='{"signal":"9","pid":56776}';
     
-> Executing Wazuh responses
-
-    select * from active_response where rule="host-deny.sh" and action="add" and ip="24.56.78.98"';
-   
+     
 Wazuh require action,ip,user in order to execute the command.
 
 > Create your own command in python. 
@@ -30,15 +32,8 @@ Wazuh require action,ip,user in order to execute the command.
 3. include filename in ActiveResonse.PYTHON_RULES.
 4. In query add **args** as a json of arguments required.
 
-## ScreenShots
+Read more about it on [docs](https://docs.easysiem.com/agents/osquery/active-response-extensions)
 
-![IPTABLE QUERY](https://i.imgur.com/TkZhQup.png)
-
-![PROCESS KILL QUERY](https://i.imgur.com/KLbaJhu.png)
-
-![DASHBOARD](https://i.imgur.com/jkiKlrK.png)
-
-![MISC](https://i.imgur.com/jAEFcZ9.png)
 
 
 ## TODO
