@@ -1,6 +1,5 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
-import ipaddress
 import json
 import os
 import re
@@ -104,8 +103,30 @@ class ActiveResponse(object):
         module = sys.modules.get(self.rule)
         return getattr(module, "Rule")(self.args)
 
+    def is_ip_valid(self,IP):
+        def isIPv4(s):
+            try:
+                return str(int(s)) == s and 0 <= int(s) <= 255
+            except:
+                return False
+
+        def isIPv6(s):
+            if len(s) > 4:
+                return False
+            try:
+                return int(s, 16) >= 0 and s[0] != '-'
+            except:
+                return False
+
+        if IP.count(".") == 3 and all(isIPv4(i) for i in IP.split(".")):
+            return True
+        if IP.count(":") == 7 and all(isIPv6(i) for i in IP.split(":")):
+            return True
+        return False
+
+
     def validate_arguments(self):
-        assert self.ip == "-" or ipaddress.ip_address(self.ip)
+        assert self.ip == "-" or self.is_ip_valid(self.ip)
         assert self.action in ["-", "add", "delete"]
         assert self.user == "-" or re.match("^[a-zA-Z0-9_.-]+$", self.user)
         assert self.rule in ActiveResponse.WAZUH_RULES + ActiveResponse.PYTHON_RULE + ActiveResponse.BASH_RULE
