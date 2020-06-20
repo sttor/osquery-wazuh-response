@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import json
 import os
@@ -8,9 +8,6 @@ import sys
 import traceback
 
 import osquery
-
-# import custom python rules
-import kill_process
 
 @osquery.register_plugin
 class ActiveResponsePlugin(osquery.TablePlugin):
@@ -78,7 +75,6 @@ class ActiveResponse(object):
         'ipfw.sh',
         'pf.sh',
         'route-null.cmd',
-        'netsh.cmd',
         'disable-account.sh',
         'firewalld-drop.sh',
     ]
@@ -137,6 +133,8 @@ class ActiveResponse(object):
         command = [self.rule, self.action, self.user, self.ip]
         if self.rule in ActiveResponse.PYTHON_RULE:
             command = self.rule_obj().command()
+        elif ".cmd" in self.rule:
+            command[0]="C:\\Program Files\\osquery\\extensions\\" + self.rule
         else:
             command[0] = os.path.join(os.path.dirname(os.path.abspath(__file__)),self.rule)
         return command
